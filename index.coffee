@@ -1,4 +1,11 @@
-String.prototype.$tags = (options = {appendTo: false, onCreate: (->), defaultTag: "div"}) ->
+String.prototype.$tags = (options = {}) ->
+    if _.isFunction options
+        options = onCreate: options
+        
+    options.onCreate or= ->
+    options.appendTo or= false
+    options.defaultTag or= "div"
+    
     parseTag = (str) ->
         if "#" in str
             [tag, rest] = str.split "#"
@@ -20,11 +27,20 @@ String.prototype.$tags = (options = {appendTo: false, onCreate: (->), defaultTag
     
     env = {}
     tags = []
-    appendTo = options.appendTo or $("body")
+    appendTo = options.appendTo
+    rootTag = false
+    if _.isString appendTo then appendTo = $ appendTo
     parts = @.replace(/\,/g, ' , ').replace(/\s+/g, ' ').split ' '
     for part,i in parts when part isnt ","
         tag = parseTag part
-        tags.push $tag = $("<#{tag.tagName}/>").appendTo appendTo
+        
+        tags.push $tag = $("<#{tag.tagName}/>")
+        
+        if appendTo
+            $tag.appendTo appendTo
+        else if tags.length > 1
+            tags[tags.length-2].after $tag
+            
         if tag.id then $tag.attr id: tag.id
         if tag.class then $tag.addClass tag.class.join " "
 
@@ -35,6 +51,9 @@ String.prototype.$tags = (options = {appendTo: false, onCreate: (->), defaultTag
                 env[tag.tagName] = [env[tag.tagName], $tag]
         else
             env[tag.tagName] = $tag
+
+        if not rootTag
+            rootTag = $tag
             
         continue if parts[i+1]? and parts[i+1] is ","
 
@@ -42,5 +61,6 @@ String.prototype.$tags = (options = {appendTo: false, onCreate: (->), defaultTag
 
 
     options.onCreate?.apply env, tags
-    tags    
- 
+    rootTag
+
+

@@ -2,8 +2,9 @@ bling
 =====
 Provides simple $tags method to string prototype. Yes this is a hack, but one which is useful for rapid prototyping. 
 
-##Dependencies
-underscore.js, jquery.js
+##Concept
+Cut out the templating and subsequent jquery binding and at the same time avoid the grossness that is markup.
+String#$tags may be called either with a single callback or an options hash containing info about where to append, creation callback and the default tag. Either way it returns the primary/root element generated so that you may append/insert it like a normal jquery wrapped html chunk.
 
 ##Syntax
 Close to css selectors. 
@@ -25,7 +26,8 @@ Implied hierarchy unless a comma follows a tag. e.g.
 		<div class="height"></div>
 		<div class="weight"></div>
 	</div>
-	
+
+
 ##Options
 **appendTo**: the jquery obj to which the tags should start being appended to. Defaults to "body"
 
@@ -43,14 +45,17 @@ Implied hierarchy unless a comma follows a tag. e.g.
 			ok.text("ok").on click: => alert "ok"
 			cancel.text("cancel")
 			
-	"ul li, li, li".$tags 
+	$("body").append "ul li, li, li".$tags 
 	    onCreate: (list, item1, item2, item3) ->
 			list.css border: "1px solid #333"
 			item1.text "1"
 			item2.text "2"
 			item3.text "3"
-			"button button".$tags 
-				appendTo: item3
-				onCreate: -> 
-					@button[0].text("OK").on click: -> alert "some text"
-					@button[1].text("CANCEL").on click: -> console.log "yo dawg"​​​​
+			item3.append "button, button".$tags -> 
+				@button[0].text("OK").on click: -> alert "some text"
+				@button[1].text("CANCEL").on click: -> console.log "yo dawg"​​​​
+				
+##Dependencies
+underscore.js, jquery.js
+
+

@@ -4,14 +4,18 @@
     __slice = [].slice;
 
   String.prototype.$tags = function(options) {
-    var $tag, appendTo, env, i, parseTag, part, parts, tag, tags, _i, _len, _ref;
+    var $tag, appendTo, env, i, parseTag, part, parts, rootTag, tag, tags, _i, _len, _ref;
     if (options == null) {
+      options = {};
+    }
+    if (_.isFunction(options)) {
       options = {
-        appendTo: false,
-        onCreate: (function() {}),
-        defaultTag: "div"
+        onCreate: options
       };
     }
+    options.onCreate || (options.onCreate = function() {});
+    options.appendTo || (options.appendTo = false);
+    options.defaultTag || (options.defaultTag = "div");
     parseTag = function(str) {
       var id, klass, rest, tag, _ref, _ref1, _ref2;
       if (__indexOf.call(str, "#") >= 0) {
@@ -39,7 +43,11 @@
     };
     env = {};
     tags = [];
-    appendTo = options.appendTo || $("body");
+    appendTo = options.appendTo;
+    rootTag = false;
+    if (_.isString(appendTo)) {
+      appendTo = $(appendTo);
+    }
     parts = this.replace(/\,/g, ' , ').replace(/\s+/g, ' ').split(' ');
     for (i = _i = 0, _len = parts.length; _i < _len; i = ++_i) {
       part = parts[i];
@@ -47,7 +55,12 @@
         continue;
       }
       tag = parseTag(part);
-      tags.push($tag = $("<" + tag.tagName + "/>").appendTo(appendTo));
+      tags.push($tag = $("<" + tag.tagName + "/>"));
+      if (appendTo) {
+        $tag.appendTo(appendTo);
+      } else if (tags.length > 1) {
+        tags[tags.length - 2].after($tag);
+      }
       if (tag.id) {
         $tag.attr({
           id: tag.id
@@ -65,6 +78,9 @@
       } else {
         env[tag.tagName] = $tag;
       }
+      if (!rootTag) {
+        rootTag = $tag;
+      }
       if ((parts[i + 1] != null) && parts[i + 1] === ",") {
         continue;
       }
@@ -73,7 +89,7 @@
     if ((_ref = options.onCreate) != null) {
       _ref.apply(env, tags);
     }
-    return tags;
+    return rootTag;
   };
 
 }).call(this);
