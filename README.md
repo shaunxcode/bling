@@ -2,6 +2,9 @@ bling
 =====
 Provides simple $tags method to string prototype. Yes this is a hack, but one which is useful for rapid prototyping. 
 
+##Dependencies
+underscore.js, jquery.js
+
 ##Syntax
 Close to css selectors. 
 
