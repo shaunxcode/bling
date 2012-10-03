@@ -17,14 +17,14 @@
       if (__indexOf.call(str, "#") >= 0) {
         _ref = str.split("#"), tag = _ref[0], rest = _ref[1];
         if (!tag.length) {
-          tag = defaultTag;
+          tag = options.defaultTag;
         }
         _ref1 = rest.split("."), id = _ref1[0], klass = 2 <= _ref1.length ? __slice.call(_ref1, 1) : [];
       } else if (__indexOf.call(str, ".") >= 0) {
         id = false;
         _ref2 = str.split("."), tag = _ref2[0], klass = 2 <= _ref2.length ? __slice.call(_ref2, 1) : [];
         if (!tag.length) {
-          tag = defaultTag;
+          tag = options.defaultTag;
         }
       } else {
         tag = str;

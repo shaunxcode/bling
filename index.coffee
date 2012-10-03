@@ -4,13 +4,13 @@ String.prototype.$tags = (options = {appendTo: false, onCreate: (->), defaultTag
             [tag, rest] = str.split "#"
 
             if not tag.length
-                tag = defaultTag
+                tag = options.defaultTag
             [id, klass...] = rest.split "."
         else if "." in str
             id = false
             [tag, klass...] = str.split "."
             if not tag.length 
-                tag = defaultTag
+                tag = options.defaultTag
         else
             tag = str
             id = false
