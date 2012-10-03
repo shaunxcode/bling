@@ -10,7 +10,7 @@
 
 bling provides a simple hack for creating html fragments. I wouldn't call it a template system but it takes the same bus to work. The motivation was tiring of either:
 
-* programatically creating dom structures and maintaining handles to them when often it was just for further appending or setting a single property b), but one which is useful for rapid prototyping. 
+* programatically creating dom structures and maintaining handles to them when often it was just for further appending or setting a single property. (meaning polluting my view object un-necessarily)
 * using something like handlebars or mustache and then having to write jquery selectors for the parts I cared about anyway. 
 
 Bling solves this by providing a simple syntax (similar to css selectors) for defining the fragments and than accepts a callback which is called with an environment (this) which already has handles to all of the created tags - grouped by tag name, class name, and ID. Note that if there is more than one you are dealing with a jquery collection and will need to use .eq(n) to grab the specific item you are looking for. In practice this has never been an issue if you use meaningful class/id names. 
