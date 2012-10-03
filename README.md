@@ -54,7 +54,16 @@ Implied hierarchy unless a comma follows a tag. e.g.
 			item3.append "button, button".$tags -> 
 				@button[0].text("OK").on click: -> alert "some text"
 				@button[1].text("CANCEL").on click: -> console.log "yo dawg"​​​​
-				
+
+Real world example of using it to quickly define a bootstrap layout
+
+	".workspace.container-fluid .row-fluid .span2.toolbox, .span5.editor, .span5.output".$tags 
+		appendTo: "body"
+		onCreate: (w,r, toolbox, editor, output) ->
+        	toolbox.text "toolbox"
+			editor.text "editor"
+			output.text "output"​​​​​​​​​​​​​​​​​​​
+        
 ##Dependencies
 underscore.js, jquery.js
 
