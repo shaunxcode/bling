@@ -23,10 +23,10 @@ parseTag = (str, defaultTag) ->
     return tagName: tag, class: klass, id: id
     
 addToEnv = (env, key, val) ->
-    if env[key]?
-        env[key] = env[key].add val
-    else
-        env[key] = val
+    if not env[key]?
+        env[key] = $()
+        
+    env[key] = env[key].add val
 
 bling = (str, options = {}) ->
     if _.isFunction options
@@ -47,11 +47,11 @@ bling = (str, options = {}) ->
         tag = parseTag part, options.defaultTag
         
         tags.push $tag = $("<#{tag.tagName}/>")
-        
+
         if appendTo
             $tag.appendTo appendTo
         else if tags.length > 1
-            tags[tags.length-2].after $tag
+            rootTag.after $tag
             
         addToEnv env, tag.tagName, $tag
         
@@ -78,5 +78,4 @@ if exports?
     exports.bling = bling
 else
     root.bling = bling
-
 

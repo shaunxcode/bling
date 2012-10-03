@@ -33,11 +33,10 @@
   };
 
   addToEnv = function(env, key, val) {
-    if (env[key] != null) {
-      return env[key] = env[key].add(val);
-    } else {
-      return env[key] = val;
+    if (!(env[key] != null)) {
+      env[key] = $();
     }
+    return env[key] = env[key].add(val);
   };
 
   bling = function(str, options) {
@@ -71,7 +70,7 @@
       if (appendTo) {
         $tag.appendTo(appendTo);
       } else if (tags.length > 1) {
-        tags[tags.length - 2].after($tag);
+        rootTag.after($tag);
       }
       addToEnv(env, tag.tagName, $tag);
       if (tag["class"]) {

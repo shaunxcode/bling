@@ -45,7 +45,7 @@ If no tag name is specified it defaults to "div" unless **defaultTag** is provid
 Useful when you just want a detached fragment you are going to append somewhere else subsequently. 
 
 ##Options
-**appendTo**: the jquery obj/selector to which the tags should start being appended to. Defaults to "body".
+**appendTo**: the jquery obj/selector to which the tags should start being appended to. Defaults to false which facilitates allowing returning jquery obj containing created tags.
 
 **onCreate**: callback which is called once all tags have been created. Defaults to no-op.
 
