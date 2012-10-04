@@ -38,7 +38,7 @@ If no tag name is specified it defaults to "div" unless **defaultTag** is provid
 	</div>
 
 ##Argument Arities
-```bling tagString, [{appendTo, onCreate, defaultTag}]```
+```bling tagString, [{appendTo, onCreate, defaultTag, [all valid jquery config options e.g. class, on, text etc.]}]```
 
 ```bling tagString, onCreate```
 

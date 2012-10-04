@@ -35,6 +35,10 @@ bling = (str, options = {}) ->
     options.onCreate or= ->
     options.appendTo or= false
     options.defaultTag or= "div"
+
+    elAttrs = {}
+    for k, v of options when k not in ["appendTo", "onCreate", "defaultTag"]
+        elAttrs[k] = v
         
     env = {}
     tags = []
@@ -46,7 +50,7 @@ bling = (str, options = {}) ->
     for part,i in parts when part isnt ","
         tag = parseTag part, options.defaultTag
         
-        tags.push $tag = $("<#{tag.tagName}/>")
+        tags.push $tag = $("<#{tag.tagName}/>", elAttrs)
 
         if appendTo
             $tag.appendTo appendTo

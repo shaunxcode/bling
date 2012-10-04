@@ -40,7 +40,7 @@
   };
 
   bling = function(str, options) {
-    var $tag, appendTo, env, i, klass, part, parts, rootTag, tag, tags, _i, _j, _len, _len1, _ref, _ref1;
+    var $tag, appendTo, elAttrs, env, i, k, klass, part, parts, rootTag, tag, tags, v, _i, _j, _len, _len1, _ref, _ref1;
     if (options == null) {
       options = {};
     }
@@ -52,6 +52,13 @@
     options.onCreate || (options.onCreate = function() {});
     options.appendTo || (options.appendTo = false);
     options.defaultTag || (options.defaultTag = "div");
+    elAttrs = {};
+    for (k in options) {
+      v = options[k];
+      if (k !== "appendTo" && k !== "onCreate" && k !== "defaultTag") {
+        elAttrs[k] = v;
+      }
+    }
     env = {};
     tags = [];
     appendTo = options.appendTo;
@@ -66,7 +73,7 @@
         continue;
       }
       tag = parseTag(part, options.defaultTag);
-      tags.push($tag = $("<" + tag.tagName + "/>"));
+      tags.push($tag = $("<" + tag.tagName + "/>", elAttrs));
       if (appendTo) {
         $tag.appendTo(appendTo);
       } else if (tags.length > 1) {
