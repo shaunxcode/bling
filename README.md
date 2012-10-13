@@ -23,7 +23,7 @@ Class and id can be added - if there is an id it must come first.
 
 There is an implied hierarchy unless a comma follows a tag. e.g. 
 
-```bling "a b c"``` => ```<a><b><c></a></b></c>```
+```bling "a b c"``` => ```<a><b><c></c></b></a>```
 
 ```bling "a b, c"``` => ```<a><b></b><c></c></a>```
 
