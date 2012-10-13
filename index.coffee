@@ -82,7 +82,7 @@ bling = (str, options = {}) ->
     rootTag
 
 if exports? 
-    exports.bling = bling
+    exports = bling
 else
     root.bling = bling
 
