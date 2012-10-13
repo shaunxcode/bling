@@ -5,7 +5,8 @@
   "version": "0.0.1",
   "keywords": ["jquery", "dom", "fragment", "dsl"],
   "dependencies": {
-    "component/jquery": "*"
+    "component/jquery": "*",
+    "component/underscore": "*"
   },
   "development": {},
   "scripts": [

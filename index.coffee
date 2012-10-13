@@ -1,3 +1,6 @@
+$ = require "jquery"
+_ = require "underscore"
+
 root = this
 parseTag = (str, defaultTag) ->
     if "#" in str
