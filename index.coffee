@@ -1,5 +1,5 @@
-$ = require "jquery"
-_ = require "underscore"
+$ = require "component-jquery"
+_ = require "component-underscore"
 
 parseTag = (str, defaultTag) ->
     if "#" in str
