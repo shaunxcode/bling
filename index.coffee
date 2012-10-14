@@ -1,7 +1,6 @@
 $ = require "jquery"
 _ = require "underscore"
 
-root = this
 parseTag = (str, defaultTag) ->
     if "#" in str
         [tag, rest] = str.split "#"
@@ -81,8 +80,4 @@ bling = (str, options = {}) ->
     options.onCreate?.apply env, tags
     rootTag
 
-if exports? 
-    exports = bling
-else
-    root.bling = bling
-
+module.exports = bling
