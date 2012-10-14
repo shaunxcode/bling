@@ -4,13 +4,9 @@
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __slice = [].slice;
 
-  if (!(typeof $ !== "undefined" && $ !== null)) {
-    $ = require("component-jquery");
-  }
+  $ = window.$ || (window.$ = require("component-jquery"));
 
-  if (!(typeof _ !== "undefined" && _ !== null)) {
-    _ = require("component-underscore");
-  }
+  _ = window._ || (window._ = require("component-underscore"));
 
   parseTag = function(str, defaultTag) {
     var id, klass, rest, tag, _ref, _ref1, _ref2;

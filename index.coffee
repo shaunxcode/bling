@@ -1,5 +1,5 @@
-if not $? then $ = require "component-jquery"
-if not _? then _ = require "component-underscore"
+$ = window.$ or= require "component-jquery"
+_ = window._ or= require "component-underscore"
 
 parseTag = (str, defaultTag) ->
     if "#" in str
