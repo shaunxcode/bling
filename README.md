@@ -42,6 +42,8 @@ If no tag name is specified it defaults to "div" unless **defaultTag** is provid
 
 ```bling tagString, onCreate```
 
+``bling tagString, {options}, onCreate```
+
 Useful when you just want a detached fragment you are going to append somewhere else subsequently. 
 
 ##Options
@@ -51,11 +53,22 @@ Useful when you just want a detached fragment you are going to append somewhere 
 
 **defaultTag**: if you do not specify a tag name and only the id or class this is the tag that will be used. Defaults to "div".
 
+**self**: this is what any element/id/classes prefixed with @ will have a ref assigned to so an external object may capture a handle to them w/o manually assigning inside the onCreate callback. If self is passed in it will be assigned to _ in the environment applied to the onCreate callback. This just aleviates the "self = this" pattern which is often utilized before a callback inside of a view which utilizes something like bling. Bling follows the convention of prefixing the variable named with $ so if you have bling "@div .@classname", me: view. You will have view.$div and view.$classname respectively.
+
 #onCreate
 It is applied with an environment giving access to the tags by name, class and id. It is called with arguments in positional order of tag creation. e.g. if you call it with "div p span" it will be called with 3 arguments. 
 If there are more than one of the same element or classname created they will be joined into a single jquery selector so to access just one of them .eq(n) must be used.
 
 ##Examples
+	class view
+		render: ->
+			@$el = bling "ul li@.name, li@.age, @.weight", self: @, ->
+				@weight.text @_.model.weight
+
+			@$name.text "willard"
+			@$age.text(23).on click: -> alert "stuff about age"
+
+
 	bling "div#name.x.y label, input, button, button"
 	    appendTo: "body"
 		onCreate: (wrapper, label, input, ok, cancel) -> 

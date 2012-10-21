@@ -9,7 +9,12 @@
   _ = require("underscore");
 
   parseTag = function(str, defaultTag) {
-    var id, klass, rest, tag, _ref, _ref1, _ref2;
+    var bindTo, i, id, k, klass, rest, tag, _i, _len, _ref, _ref1, _ref2;
+    bindTo = {
+      id: false,
+      "class": [],
+      tag: false
+    };
     if (__indexOf.call(str, "#") >= 0) {
       _ref = str.split("#"), tag = _ref[0], rest = _ref[1];
       if (!tag.length) {
@@ -27,10 +32,26 @@
       id = false;
       klass = false;
     }
+    if (id[0] === "@") {
+      bindTo.id = true;
+      id = id.slice(1);
+    }
+    if (tag[0] === "@") {
+      bindTo.tag = true;
+      tag = tag.slice(1);
+    }
+    for (i = _i = 0, _len = klass.length; _i < _len; i = ++_i) {
+      k = klass[i];
+      if (k[0] === "@") {
+        klass[i] = k.slice(1);
+        bindTo["class"].push(klass[i]);
+      }
+    }
     return {
       tagName: tag,
       "class": klass,
-      id: id
+      id: id,
+      bindTo: bindTo
     };
   };
 
@@ -41,8 +62,8 @@
     return env[key] = env[key].add(val);
   };
 
-  bling = function(str, options) {
-    var $tag, appendTo, elAttrs, env, i, k, klass, part, parts, rootTag, tag, tags, v, _i, _j, _len, _len1, _ref, _ref1;
+  bling = function(str, options, onCreate) {
+    var $tag, appendTo, elAttrs, env, i, k, klass, part, parts, rootTag, tag, tags, v, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
     if (options == null) {
       options = {};
     }
@@ -51,13 +72,17 @@
         onCreate: options
       };
     }
+    if (_.isFunction(onCreate)) {
+      options.onCreate = onCreate;
+    }
     options.onCreate || (options.onCreate = function() {});
     options.appendTo || (options.appendTo = false);
     options.defaultTag || (options.defaultTag = "div");
+    options.self || (options.self = {});
     elAttrs = {};
     for (k in options) {
       v = options[k];
-      if (k !== "appendTo" && k !== "onCreate" && k !== "defaultTag") {
+      if (k !== "appendTo" && k !== "onCreate" && k !== "defaultTag" && k !== "self") {
         elAttrs[k] = v;
       }
     }
@@ -74,7 +99,7 @@
       if (!(part !== ",")) {
         continue;
       }
-      tag = parseTag(part, options.defaultTag);
+      tag = parseTag(part.trim(), options.defaultTag);
       tags.push($tag = $("<" + tag.tagName + "/>", elAttrs));
       if (appendTo) {
         $tag.appendTo(appendTo);
@@ -96,6 +121,17 @@
         });
         addToEnv(env, tag.id, $tag);
       }
+      if (tag.bindTo.id) {
+        options.self["$" + tag.id] = $tag;
+      }
+      _ref1 = tag.bindTo["class"];
+      for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+        k = _ref1[_k];
+        options.self["$" + k] = $tag;
+      }
+      if (tag.bindTo.tag) {
+        options.self["$" + tag.tagName] = $tag;
+      }
       if (!rootTag) {
         rootTag = $tag;
       }
@@ -104,8 +140,9 @@
       }
       appendTo = $tag;
     }
-    if ((_ref1 = options.onCreate) != null) {
-      _ref1.apply(env, tags);
+    env._ = options.self;
+    if ((_ref2 = options.onCreate) != null) {
+      _ref2.apply(env, tags);
     }
     return rootTag;
   };
