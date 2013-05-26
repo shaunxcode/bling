@@ -2,7 +2,7 @@
   "name": "bling",
   "repo": "shaunxcode/bling",
   "description": "jquery fragment creation utility",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": ["jquery", "dom", "fragment", "dsl"],
   "dependencies": {
     "component/underscore": "*"
