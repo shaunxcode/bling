@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>bling example</title>
+</head>
+<body>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+<script src="build/build.js"></script>
+<script>
+bling = require("bling"); 
+bling(".cat", function() {
+	this.cat.appendTo("body").text("cat rabbit").draggable();
+
+});
+
+</script>
+</body>
+</html>
