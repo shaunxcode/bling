@@ -103,4 +103,5 @@ bling = (str, options = {}, onCreate) ->
     options.onCreate?.apply env, tags
     rootTag
 
+bling.version = "0.0.4"
 module.exports = bling
