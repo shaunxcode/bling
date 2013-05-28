@@ -10,7 +10,6 @@
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="bling.js"></script>
 <script>
-bling = require("bling"); 
 $.fn["bappend"] = function() {this["append"](bling.apply({}, arguments))};
 bling(".cat, .badger", function() {
 	this.cat.appendTo("body").text("cat rabbit").draggable();
