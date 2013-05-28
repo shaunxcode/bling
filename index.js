@@ -101,11 +101,15 @@
         continue;
       }
       tag = parseTag(part.trim(), options.defaultTag);
-      $tag = $("<" + tag.tagName + "/>", elAttrs);
+      tags.push($tag = $("<" + tag.tagName + "/>", elAttrs));
       if (appendTo) {
         $tag.appendTo(appendTo);
       } else if (depth === 0) {
-        tags.push($tag);
+        if (!rootTag) {
+          rootTag = $tag;
+        } else {
+          rootTag = rootTag.add($tag);
+        }
       }
       addToEnv(env, tag.tagName, $tag);
       if (tag["class"]) {
@@ -133,9 +137,6 @@
       if (tag.bindTo.tag) {
         options.self["$" + tag.tagName] = $tag;
       }
-      if (!rootTag) {
-        rootTag = $tag;
-      }
       if ((parts[i + 1] != null) && parts[i + 1] === ",") {
         continue;
       }
@@ -146,10 +147,10 @@
     if ((_ref2 = options.onCreate) != null) {
       _ref2.apply(env, tags);
     }
-    return tags;
+    return rootTag;
   };
 
-  bling.version = "0.0.5";
+  bling.version = "0.0.6";
 
   module.exports = bling;
 

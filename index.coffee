@@ -69,13 +69,16 @@ bling = (str, options = {}, onCreate) ->
     for part,i in parts when part isnt ","
         tag = parseTag part.trim(), options.defaultTag
         
-        $tag = $("<#{tag.tagName}/>", elAttrs)
+        tags.push $tag = $("<#{tag.tagName}/>", elAttrs)
 
         if appendTo
             $tag.appendTo appendTo
-        else if depth is 0 
-            tags.push $tag 
-            
+        else if depth is 0
+            if not rootTag
+                rootTag = $tag
+            else 
+                rootTag = rootTag.add $tag 
+
         addToEnv env, tag.tagName, $tag
         
         if tag.class
@@ -93,9 +96,6 @@ bling = (str, options = {}, onCreate) ->
         if tag.bindTo.tag
             options.self["$"+tag.tagName] = $tag
 
-        if not rootTag
-            rootTag = $tag
-                
         continue if parts[i+1]? and parts[i+1] is ","
 
         appendTo = $tag
@@ -103,7 +103,7 @@ bling = (str, options = {}, onCreate) ->
 
     env._ = options.self
     options.onCreate?.apply env, tags
-    tags
+    rootTag
 
-bling.version = "0.0.5"
+bling.version = "0.0.6"
 module.exports = bling
