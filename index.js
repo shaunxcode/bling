@@ -62,7 +62,7 @@
   };
 
   bling = function(str, options, onCreate) {
-    var $tag, appendTo, elAttrs, env, i, k, klass, part, parts, rootTag, tag, tags, v, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+    var $tag, appendTo, depth, elAttrs, env, i, k, klass, part, parts, rootTag, tag, tags, v, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
 
     if (options == null) {
       options = {};
@@ -90,6 +90,7 @@
     tags = [];
     appendTo = options.appendTo;
     rootTag = false;
+    depth = 0;
     if (_.isString(appendTo)) {
       appendTo = $(appendTo);
     }
@@ -100,11 +101,11 @@
         continue;
       }
       tag = parseTag(part.trim(), options.defaultTag);
-      tags.push($tag = $("<" + tag.tagName + "/>", elAttrs));
+      $tag = $("<" + tag.tagName + "/>", elAttrs);
       if (appendTo) {
         $tag.appendTo(appendTo);
-      } else if (tags.length > 1) {
-        rootTag.after($tag);
+      } else if (depth === 0) {
+        tags.push($tag);
       }
       addToEnv(env, tag.tagName, $tag);
       if (tag["class"]) {
@@ -139,15 +140,16 @@
         continue;
       }
       appendTo = $tag;
+      depth++;
     }
     env._ = options.self;
     if ((_ref2 = options.onCreate) != null) {
       _ref2.apply(env, tags);
     }
-    return rootTag;
+    return tags;
   };
 
-  bling.version = "0.0.4";
+  bling.version = "0.0.5";
 
   module.exports = bling;
 
