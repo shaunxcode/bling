@@ -1,4 +1,4 @@
-_ = require "underscore"
+if not _? then `_ = require("underscore")`
 
 parseTag = (str, defaultTag) ->
     bindTo = {id: false, class: [], tag: false}
